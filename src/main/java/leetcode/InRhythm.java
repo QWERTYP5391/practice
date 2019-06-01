@@ -67,10 +67,10 @@ class MyObject implements Comparable<MyObject> {
 
     public int compareTo(MyObject o) {
 
-        int occurrences = o.occurrences.compareTo(this.occurrences);
+        int occurrences = this.occurrences.compareTo(o.occurrences);
 
         if (occurrences == 0) {
-            return o.key.compareTo(this.key);
+            return this.key.compareTo(o.key);
         } else {
             return occurrences;
         }

@@ -4,9 +4,7 @@ package leetcode;
 // SOME CLASSES WITHIN A PACKAGE MAY BE RESTRICTED
 // DEFINE ANY CLASS AND METHOD NEEDED
 
-import java.util.ArrayDeque;
 import java.util.List;
-import java.util.Queue;
 
 // CLASS BEGINS, THIS CLASS IS REQUIRED
 public class Amazon3 {
@@ -14,42 +12,34 @@ public class Amazon3 {
     int removeObstacle(int numRows, int numColumns, List<List<Integer>> lot) {
         // WRITE YOUR CODE HERE
         boolean[][] visited = new boolean[numRows][numColumns];
-        Queue<Node> queue = new ArrayDeque<>();
-        queue.add(new Node(0, 0));
-        return distanceHelper(0, lot, visited, queue);
+        return distanceHelper(0, 0, 0, lot, visited);
     }
 
     // METHOD SIGNATURE ENDS
-    int distanceHelper(int distance, List<List<Integer>> lot, boolean[][] visited, Queue<Node> queue) {
+    private int distanceHelper(int row, int column, int distance, List<List<Integer>> lot, boolean[][] visited) {
 
-        Node node = queue.remove();
-
-        if (lot.get(node.row).get(node.column).equals(9)) {
+        if (lot.get(row).get(column).equals(9)) {
             return distance;
         }
 
-        if ((node.row + 1 >= 0 && node.row + 1 < lot.size()) && (node.column >= 0 && node.column < lot.get(0).size()) && !lot.get(node.row + 1).get(node.column).equals(0) && (!visited[node.row + 1][node.column])) {
-            visited[node.row + 1][node.column] = true;
-            queue.add(new Node(node.row + 1, node.column));
-            return distanceHelper(distance + 1, lot, visited, queue);
+        if (row + 1 < lot.size() && column < lot.get(0).size() && !lot.get(row + 1).get(column).equals(0) && !visited[row + 1][column]) {
+            visited[row + 1][column] = true;
+            return distanceHelper(row + 1, column, distance + 1, lot, visited);
         }
 
-        if ((node.row - 1 >= 0 && node.row - 1 < lot.size()) && node.column >= 0 && node.column < lot.get(0).size() && !lot.get(node.row - 1).get(node.column).equals(0) && (!visited[node.row - 1][node.column])) {
-            visited[node.row - 1][node.column] = true;
-            queue.add(new Node(node.row - 1, node.column));
-            return distanceHelper(distance + 1, lot, visited, queue);
+        if (row - 1 >= 0 && row - 1 < lot.size() && column < lot.get(0).size() && !lot.get(row - 1).get(column).equals(0) && !visited[row - 1][column]) {
+            visited[row - 1][column] = true;
+            return distanceHelper(row - 1, column, distance + 1, lot, visited);
         }
 
-        if ((node.row >= 0 && node.row < lot.size()) && node.column + 1 >= 0 && node.column - 1 < lot.get(0).size() && !lot.get(node.row).get(node.column + 1).equals(0) && (!visited[node.row][node.column + 1])) {
-            visited[node.row][node.column + 1] = true;
-            queue.add(new Node(node.row, node.column + 1));
-            return distanceHelper(distance + 1, lot, visited, queue);
+        if (row < lot.size() && column - 1 < lot.get(0).size() && !lot.get(row).get(column + 1).equals(0) && !visited[row][column + 1]) {
+            visited[row][column + 1] = true;
+            return distanceHelper(row, column + 1, distance + 1, lot, visited);
         }
 
-        if ((node.row >= 0 && node.row < lot.size()) && node.column - 1 >= 0 && node.column - 1 < lot.get(0).size() && !lot.get(node.row).get(node.column - 1).equals(0) && (!visited[node.row][node.column - 1])) {
-            visited[node.row][node.column - 1] = true;
-            queue.add(new Node(node.row, node.column - 1));
-            return distanceHelper(distance + 1, lot, visited, queue);
+        if (row < lot.size() && column - 1 >= 0 && column - 1 < lot.get(0).size() && !lot.get(row).get(column - 1).equals(0) && !visited[row][column - 1]) {
+            visited[row][column - 1] = true;
+            return distanceHelper(row, column - 1, distance + 1, lot, visited);
         }
 
         return 0;
@@ -57,14 +47,4 @@ public class Amazon3 {
     }
 }
 
-class Node {
-    public Node(int row, int column) {
-        this.row = row;
-        this.column = column;
-    }
 
-    public int row;
-    public int column;
-
-
-}
